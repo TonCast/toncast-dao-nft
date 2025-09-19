@@ -1,57 +1,69 @@
-# Old Fungible, Non-Fungible, Semi-Fungible Tokens Smart Contracts
+# TON NFT collection and items (on-chain metadata) with Tonkeeper links
 
-> ⚠️ This is an outdated repository with the first versions of Jettons and NFTs.
-> 
-> Current versions of tokens:
->
-> Jetton - https://github.com/ton-blockchain/jetton-contract
->
-> NFT - https://github.com/ton-blockchain/nft-contract
 
 ## Structure
 
-ft/ - Jetton (Fungible Token) smart contract and build.
+- nft/ — FunC contracts for collection and items, build script
+- scripts/ — ton:// link generators (deploy and mint)
+- bin/ — local func/fift/fiftlib (not committed)
+- stdlib.fc — FunC standard library
+- misc/forward-fee-calc.fc — helper utility
 
-misc/ - forward-fee-calc.fc
+## NFT contracts
 
-nft/ - NFT smart contract and build.
+- `nft/nft-collection.fc` — collection; `get_nft_content` returns individual content as is (format is defined at mint time)
+- `nft/nft-item.fc` — NFT item
 
-sandbox_tests/ - Jetton Sandbox (Blueprint) tests.
+On-chain metadata follows TEP‑64 ([0064-token-data-standard](https://github.com/ton-blockchain/TEPs/blob/master/text/0064-token-data-standard.md)).
 
-scripts/ - Jetton Sandbox (Blueprint) deploy scripts.
+## Build
 
-wrappers/ - Jetton Sandbox (Blueprint) JS wrappers.
+Build NFT (uses local `bin/func`, `bin/fift`):
+```bash
+npm run build
+```
 
-stdlib.fc
+### Local toolchain (func/fift) setup (bin/ is gitignored)
 
-## NFT (Non-Fungible tokens) in `nft` folder
+If you don't have `bin/` yet, download the local toolchain before building:
 
-Basic implementation of smart contracts for NFT tokens and NFT collections in accordance with the [Standard](https://github.com/ton-blockchain/TIPs/issues/62).
+1) Create the folder and move into it
+```bash
+mkdir -p bin && cd bin
+```
 
-`nft-collection.fc` - basic implementation of immutable NFT collection with royalty.
+2) Download binaries (from official TON releases) and fiftlib
+- Place `func` and `fift` binaries into `bin/`
+- Download `fiftlib` (library) and unpack into `bin/fiftlib/`
 
-`nft-collection-editable.fc` - basic implementation of the NFT collection with royalty in which the author can change the content and royalty params.
+3) Make binaries executable
+```bash
+chmod +x func fift
+```
 
-It is preferable to use an editable collection in case if you decide to change content hosting in the future (for example, to TON Storage).
+The script `nft/compile.sh` sets `PATH` and `FIFTPATH` to use `bin/func`, `bin/fift` and `bin/fiftlib` automatically.
 
-`nft-item.fc` - basic implementation of immutable NFT item.
+## Tonkeeper links
 
-[TonWeb](https://github.com/toncenter/tonweb) JavaScript SDK 0.0.38+ supports these contracts. 
+- Deploy collection:
+```bash
+npm run link:nft:tonkeeper -- --amount=100000000
+```
 
-Also repo contains an example of a simple marketplace smart contract `nft-marketplace` and a smart contract for selling NFT for a fixed price for Toncoins `nft-sale`.
+- Mint item:
+```bash
+npm run link:nft:mint:tonkeeper -- --collection=<address> --index=<n> --owner=<address> --amount=100000000 --staked=1000
+```
 
-In a real product, marketplace and sale smart contracts are likely to be more sophisticated.
+- Change collection owner:
+```bash
+npm run link:nft:owner:tonkeeper -- --collection=<address> --newOwner=<address> --amount=50000000
+```
 
-## Jettons (Fungible tokens) in `ft` folder
+Scripts print only `ton://` deeplinks (`init=` for deploy, `bin=` for mint body).
 
-Basic implementation of smart contracts for Jetton wallet and Jetton minter in accordance with the [Standard](https://github.com/ton-blockchain/TIPs/issues/74).
+## Upstream reference
 
-Contains an example of a simple ICO smart contract.
+This repository is derived from the original token contracts and examples in the TON ecosystem. Historical reference (upstream inspiration):
 
-## Semi-Fungible
-
-Semi-Fungible tokens is combination of NFT and FT.
-
-# Compile
-
-Compiled contracts are in `build/` folders. Compiled by [func-0.3.0](https://github.com/ton-blockchain/ton/releases/tag/func-0.3.0).
+- https://github.com/ton-blockchain/token-contract
