@@ -132,6 +132,21 @@ int min_tons_for_storage() asm "50000000 PUSHINT"; ;; 0.05 TON
       send_msg(sender_address, 0, op::report_static_data(), query_id, begin_cell().store_uint(index, 256).store_slice(collection_address), 64);  ;; carry all the remaining value of the inbound message
       return ();
     }
+    if (op == op::get_all_data()) {
+      send_msg(
+        sender_address,
+        0,
+        op::report_all_data(),
+        query_id,
+        begin_cell()
+          .store_uint(index, 256)
+          .store_slice(collection_address)
+          .store_slice(owner_address)
+          .store_ref(content),
+        64
+      );  ;; carry all the remaining value of the inbound message
+      return ();
+    }
     throw(0xffff);
 }
 
