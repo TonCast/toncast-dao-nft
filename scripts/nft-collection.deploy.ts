@@ -14,12 +14,12 @@ import { createHash } from 'crypto';
 
 // Collection params - Modify for your collection!
 const collectionParams = {
-  owner: Address.parse("0QC5aIl4jhHxR-xpt27LGmkkXSKqKrfPDrIFRVbw3pJp1ak1"), // Your address
+  owner: Address.parse("0QDupEKOQUR4741xxeObL36Kj-izgp_UgyWzKPqqs6Plpwqg"), // Your address
   royaltyAddress: Address.parse("EQCQMcvQkJaukQkocQUG2dnTAk-s2_WzAx8JOnxI7LKDKdm8"), // same as owner
   royaltyFactor: 100, // 1%
   royaltyBase: 10000,
   // On-chain metadata fields (stored as on-chain dict per TEP-64)
-  name: "TonCAST Stake NFTs OnChain v0.0.1",
+  name: "TonCAST Stake NFTs OnChain v0.0.2",
   description: "Proof-of-stake NFTs for TonCAST DAO with simplified on-chain metadata",
   image: "https://test.toncast.me/images/nft-v2/collection.png",
   cover_image: "https://test.toncast.me/images/nft-v2/collection-cover.png",

@@ -13,11 +13,14 @@ function buildNftTransferBody(args: {
     .storeUint(args.queryId, 64)
     .storeAddress(args.newOwner)
     .storeAddress(args.responseDestination ?? null)
-    .storeUint(1, 1) // custom_payload flag (ignored by our NFT, but keeps format stable)
+    .storeUint(0, 1) // custom_payload flag = 0 (null)
     .storeCoins(args.forwardAmount);
 
   if (args.forwardPayload && args.forwardPayload.length > 0) {
     body.storeBuffer(args.forwardPayload);
+  } else if (args.forwardAmount > 0n) {
+    // Ensure at least 1 bit remains after forward_amount as required by our NFT
+    body.storeUint(0, 1);
   }
 
   return body.endCell();
