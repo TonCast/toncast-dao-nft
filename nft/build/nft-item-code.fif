@@ -237,7 +237,7 @@ PROGRAM{
       0x8b771735 PUSHINT	//  collection_address index sender_address query_id _65=0 _66
       s0 s4 XCHG
       NEWC	//  collection_address _66 sender_address query_id _65=0 index _67
-      256 STU	//  collection_address _66 sender_address query_id _65=0 _69
+      64 STU	//  collection_address _66 sender_address query_id _65=0 _69
       s0 s5 XCHG2	//  _65=0 _66 sender_address query_id _69 collection_address
       STSLICER	//  _65=0 _66 sender_address query_id _70
       s2 s4 XCHG
@@ -264,7 +264,7 @@ PROGRAM{
       0x7b7b7b7b PUSHINT	//  query_id index sender_address data_cell _85=0 _86
       s0 s4 XCHG
       NEWC	//  query_id _86 sender_address data_cell _85=0 index _87
-      256 STU	//  query_id _86 sender_address data_cell _85=0 _89
+      64 STU	//  query_id _86 sender_address data_cell _85=0 _89
       s1 s2 XCHG	//  query_id _86 sender_address _85=0 data_cell _89
       STREF	//  query_id _86 sender_address _85=0 _90
       s4 s3 s0 XCHG3
