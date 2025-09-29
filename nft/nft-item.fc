@@ -138,12 +138,12 @@ int min_tons_for_storage() asm "50000000 PUSHINT"; ;; 0.05 TON
       return ();
     }
     if (op == op::get_static_data()) {
-      send_msg(sender_address, 0, op::report_static_data(), query_id, begin_cell().store_uint(index, 256).store_slice(collection_address), 64);  ;; carry all the remaining value of the inbound message
+      send_msg(sender_address, 0, op::report_static_data(), query_id, begin_cell().store_uint(index, 64).store_slice(collection_address), 64);  ;; carry all the remaining value of the inbound message
       return ();
     }
     if (op == op::get_all_data()) {
       ;; Build message body compatible with Tact NftReportAllData format
-      ;; Message structure: op(32) + queryId(64) + index(256) + data(ref)
+      ;; Message structure: op(32) + queryId(64) + index(64) + data(ref)
       
       cell addr_data = begin_cell()
         .store_slice(collection_address)
@@ -156,7 +156,7 @@ int min_tons_for_storage() asm "50000000 PUSHINT"; ;; 0.05 TON
         .end_cell();
       
       ;; Send message with inline body
-      send_msg(sender_address, 0, op::report_all_data(), query_id, begin_cell().store_uint(index, 256).store_ref(data_cell), 64);
+      send_msg(sender_address, 0, op::report_all_data(), query_id, begin_cell().store_uint(index, 64).store_ref(data_cell), 64);
       return ();
     }
     throw(0xffff);
